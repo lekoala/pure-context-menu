@@ -40,6 +40,7 @@ const items = [
 test("it can create", (t) => {
   let inst = new EasyContextMenu(document.querySelector("body"), items);
   t.is(inst.constructor.name, "EasyContextMenu");
+  inst.off();
 });
 
 test("it can update options", (t) => {
@@ -56,5 +57,7 @@ test("it is built on right click", (t) => {
   t.is(document.querySelector(".easy-context-menu"), null);
   body.dispatchEvent(new Event("contextmenu"));
   let menu = document.querySelector(".easy-context-menu");
-  t.assert(menu.constructor.name === "HTMLUListElement", "It was " + menu.constructor.name);
+  t.assert(menu?.constructor?.name === "HTMLUListElement", menu ? "It was " + menu.constructor.name : "No menu");
+  inst.off();
+  t.is(document.querySelector(".easy-context-menu"), null);
 });

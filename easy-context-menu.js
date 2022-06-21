@@ -195,6 +195,7 @@ class EasyContextMenu {
    * Remove all the event listeners that were registered for this feature
    */
   off() {
+    this._removeExistingContextMenu();
     document.removeEventListener("click", this._onDocumentClick);
     globalListenerSet = false;
     this._el.oncontextmenu = null;

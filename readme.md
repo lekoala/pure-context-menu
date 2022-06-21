@@ -50,6 +50,10 @@ let bodyMenu = new EasyContextMenu(document.querySelector("html"), items);
 
 ## Features
 
+### Built-in styles for Bootstrap
+
+Easy context menu use default Bootstrap styles so you don't need extra css. Otherwise, look at `styles.scss` to see some default styles you can use.
+
 ### Prevent close on click
 
 By default, clicking on an item will close them menu. You can control this with `preventCloseOnClick`
@@ -61,6 +65,10 @@ The callback receive the event that originally opened the context menu. This all
 ### Dividers
 
 Simply pass "-" in the list of elements to mark dividers.
+
+### Mobile support
+
+Surprisingly, modern mobile browsers translate long press to a contextmenu event that it works out of the box :-)
 
 ## Options
 
