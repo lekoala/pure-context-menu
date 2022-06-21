@@ -1,0 +1,80 @@
+# Easy Context Menu
+
+[![NPM](https://nodei.co/npm/easy-context-menu.png?mini=true)](https://nodei.co/npm/easy-context-menu/)
+[![Downloads](https://img.shields.io/npm/dt/easy-context-menu.svg)](https://www.npmjs.com/package/easy-context-menu)
+
+## How to use
+
+Easily manage the right click context menu.
+
+No additional CSS needed if you are using Bootstrap!
+
+```js
+import EasyContextMenu from "./easy-context-menu.js";
+
+const items = [
+  {
+    label: "Click here",
+    callback: () => {
+      alert("You clicked here");
+    },
+  },
+  "-",
+  {
+    label: "Target click",
+    callback: (e) => {
+      if (e.target.id) {
+        alert("You clicked on target " + e.target.id);
+      } else {
+        alert("You didn't click on a target");
+      }
+    },
+  },
+  {
+    label: "This is a long menu item that spans on two line",
+    callback: () => {
+      alert("You clicked on a long line");
+    },
+  },
+  {
+    label: "This will not close",
+    preventCloseOnClick: true,
+    callback: () => {
+      alert("It didn't close");
+    },
+  },
+];
+// bind to html if body does not have 100% height
+let bodyMenu = new EasyContextMenu(document.querySelector("html"), items);
+```
+
+## Features
+
+### Prevent close on click
+
+By default, clicking on an item will close them menu. You can control this with `preventCloseOnClick`
+
+### Determining target
+
+The callback receive the event that originally opened the context menu. This allow determing the target under the context menu.
+
+### Dividers
+
+Simply pass "-" in the list of elements to mark dividers.
+
+## Options
+
+Options can be either passed to the constructor (eg: optionName) or globally updated using `EasyContextMenu.updateGlobalOptions`
+
+| Name                | Default             | Description                              |
+| ------------------- | ------------------- | ---------------------------------------- |
+| contextMenuClass    | "easy-context-menu" | The class used for selecting the menu    |
+| dropdownClass       | "dropdown-menu"     | Another class to style the menu          |
+| dividerClass        | "dropdown-divider"  | Class for dividers                       |
+| itemClass           | "dropdown-item"     | Class for items                          |
+| zIndex              | 9999                | z-index assigned to the menu             |
+| preventCloseOnClick | false               | Global behaviour for items when clicking |
+
+## Browser supports
+
+Modern browsers (edge, chrome, firefox, safari... not IE11). [Add a warning if necessary](https://github.com/lekoala/nomodule-browser-warning.js/).
