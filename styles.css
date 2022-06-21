@@ -1,4 +1,4 @@
-.bootstrap-context-menu.dropdown-menu {
+.pure-context-menu.dropdown-menu {
   background: #fff;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   border-radius: 0.5rem;
@@ -7,24 +7,24 @@
   padding: 0;
   display: block;
 }
-.bootstrap-context-menu.dropdown-menu .dropdown-item {
+.pure-context-menu.dropdown-menu .dropdown-item {
   display: block;
   box-sizing: border-box;
   width: 100%;
   padding: 0.5rem;
 }
-.bootstrap-context-menu.dropdown-menu .dropdown-item:hover {
+.pure-context-menu.dropdown-menu .dropdown-item:hover {
   background: #eee;
 }
-.bootstrap-context-menu.dropdown-menu li:first-child .dropdown-item {
+.pure-context-menu.dropdown-menu li:first-child .dropdown-item {
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
 }
-.bootstrap-context-menu.dropdown-menu li:last-child .dropdown-item {
+.pure-context-menu.dropdown-menu li:last-child .dropdown-item {
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
 }
-.bootstrap-context-menu.dropdown-menu .dropdown-divider {
+.pure-context-menu.dropdown-menu .dropdown-divider {
   margin: 0;
 }
 /*# sourceMappingURL=styles.css.map */

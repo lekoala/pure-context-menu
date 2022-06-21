@@ -1,4 +1,4 @@
-import BootstrapContextMenu from "../bootstrap-context-menu.js";
+import PureContextMenu from "../pure-context-menu.js";
 import test from "ava";
 
 // Somehow new Event syntax is not working
@@ -38,26 +38,26 @@ const items = [
 ];
 
 test("it can create", (t) => {
-  let inst = new BootstrapContextMenu(document.querySelector("body"), items);
-  t.is(inst.constructor.name, "BootstrapContextMenu");
+  let inst = new PureContextMenu(document.querySelector("body"), items);
+  t.is(inst.constructor.name, "PureContextMenu");
   inst.off();
 });
 
 test("it can update options", (t) => {
-  t.assert(BootstrapContextMenu.getDefaultOptions().preventCloseOnClick === false);
-  BootstrapContextMenu.updateDefaultOptions({
+  t.assert(PureContextMenu.getDefaultOptions().preventCloseOnClick === false);
+  PureContextMenu.updateDefaultOptions({
     preventCloseOnClick: true,
   });
-  t.assert(BootstrapContextMenu.getDefaultOptions().preventCloseOnClick === true);
+  t.assert(PureContextMenu.getDefaultOptions().preventCloseOnClick === true);
 });
 
 test("it is built on right click", (t) => {
   let body = document.querySelector("body");
-  let inst = new BootstrapContextMenu(body, items);
-  t.is(document.querySelector(".bootstrap-context-menu"), null);
+  let inst = new PureContextMenu(body, items);
+  t.is(document.querySelector(".pure-context-menu"), null);
   body.dispatchEvent(new Event("contextmenu"));
-  let menu = document.querySelector(".bootstrap-context-menu");
+  let menu = document.querySelector(".pure-context-menu");
   t.assert(menu?.constructor?.name === "HTMLUListElement", menu ? "It was " + menu.constructor.name : "No menu");
   inst.off();
-  t.is(document.querySelector(".bootstrap-context-menu"), null);
+  t.is(document.querySelector(".pure-context-menu"), null);
 });

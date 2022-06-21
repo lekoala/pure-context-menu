@@ -1,12 +1,12 @@
 {
-  "name": "bootstrap-context-menu",
+  "name": "pure-context-menu",
   "type": "module",
   "version": "1.0.0",
   "description": "Easy context menu manager for Bootstrap and vanilla js",
-  "main": "bootstrap-context-menu",
+  "main": "pure-context-menu",
   "scripts": {
     "test": "ava",
-    "build": "esbuild --mangle-props=^_ --bundle --minify --format=esm --sourcemap bootstrap-context-menu.js --outfile=bootstrap-context-menu.min.js",
+    "build": "esbuild --mangle-props=^_ --bundle --minify --format=esm --sourcemap pure-context-menu.js --outfile=pure-context-menu.min.js",
     "start": "npm run build -- --servedir=.",
     "watch": "npm run build -- --watch",
     "build-min": "npm run build && git add -A && git commit -m \"build min file\"",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/lekoala/bootstrap-context-menu"
+    "url": "https://github.com/lekoala/pure-context-menu"
   },
   "keywords": [
     "DOM",

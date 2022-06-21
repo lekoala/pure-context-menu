@@ -1,7 +1,7 @@
-# Bootstrap Context Menu
+# Pure Context Menu
 
-[![NPM](https://nodei.co/npm/bootstrap-context-menu.png?mini=true)](https://nodei.co/npm/bootstrap-context-menu/)
-[![Downloads](https://img.shields.io/npm/dt/bootstrap-context-menu.svg)](https://www.npmjs.com/package/bootstrap-context-menu)
+[![NPM](https://nodei.co/npm/pure-context-menu.png?mini=true)](https://nodei.co/npm/pure-context-menu/)
+[![Downloads](https://img.shields.io/npm/dt/pure-context-menu.svg)](https://www.npmjs.com/package/pure-context-menu)
 
 ## How to use
 
@@ -10,7 +10,7 @@ Easily manage the right click context menu.
 No additional CSS needed if you are using Bootstrap!
 
 ```js
-import BootstrapContextMenu from "./bootstrap-context-menu.js";
+import PureContextMenu from "./pure-context-menu.js";
 
 const items = [
   {
@@ -45,7 +45,7 @@ const items = [
   },
 ];
 // bind to html if body does not have 100% height
-let bodyMenu = new BootstrapContextMenu(document.querySelector("html"), items);
+let bodyMenu = new PureContextMenu(document.querySelector("html"), items);
 ```
 
 ## Features
@@ -74,14 +74,14 @@ Surprisingly, modern mobile browsers translate long press to a contextmenu event
 
 Options can be either passed to the constructor (eg: optionName) or globally updated using `EasyContextMenu.updateGlobalOptions`
 
-| Name                | Default                  | Description                              |
-| ------------------- | ------------------------ | ---------------------------------------- |
-| contextMenuClass    | "bootstrap-context-menu" | The class used for selecting the menu    |
-| dropdownClass       | "dropdown-menu"          | Another class to style the menu          |
-| dividerClass        | "dropdown-divider"       | Class for dividers                       |
-| itemClass           | "dropdown-item"          | Class for items                          |
-| zIndex              | 9999                     | z-index assigned to the menu             |
-| preventCloseOnClick | false                    | Global behaviour for items when clicking |
+| Name                | Default             | Description                              |
+| ------------------- | ------------------- | ---------------------------------------- |
+| contextMenuClass    | "pure-context-menu" | The class used for selecting the menu    |
+| dropdownClass       | "dropdown-menu"     | Another class to style the menu          |
+| dividerClass        | "dropdown-divider"  | Class for dividers                       |
+| itemClass           | "dropdown-item"     | Class for items                          |
+| zIndex              | 9999                | z-index assigned to the menu             |
+| preventCloseOnClick | false               | Global behaviour for items when clicking |
 
 ## Browser supports
 

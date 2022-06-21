@@ -2,7 +2,7 @@
 
 let globalListenerSet = false;
 let baseOptions = {
-  contextMenuClass: "bootstrap-context-menu",
+  contextMenuClass: "pure-context-menu",
   dropdownClass: "dropdown-menu",
   dividerClass: "dropdown-divider",
   itemClass: "dropdown-item",
@@ -14,7 +14,7 @@ let baseOptions = {
  * Easily manage context menus
  * Works out of the box with bootstrap css
  */
-class BootstrapContextMenu {
+class PureContextMenu {
   _el;
   _items;
   _options;
@@ -202,4 +202,4 @@ class BootstrapContextMenu {
   }
 }
 
-export default BootstrapContextMenu;
+export default PureContextMenu;
