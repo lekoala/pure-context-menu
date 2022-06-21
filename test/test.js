@@ -55,5 +55,6 @@ test("it is built on right click", (t) => {
   let inst = new EasyContextMenu(body, items);
   t.is(document.querySelector(".easy-context-menu"), null);
   body.dispatchEvent(new Event("contextmenu"));
-  t.assert(document.querySelector(".easy-context-menu").constructor.name === "HTMLDivElement");
+  let menu = document.querySelector(".easy-context-menu");
+  t.assert(menu.constructor.name === "HTMLUListElement", "It was " + menu.constructor.name);
 });

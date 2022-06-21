@@ -60,7 +60,7 @@ class EasyContextMenu {
    * @returns {HTMLElement}
    */
   _buildContextMenu = () => {
-    const contextMenu = document.createElement("div");
+    const contextMenu = document.createElement("ul");
     contextMenu.style.minWidth = "120px";
     contextMenu.style.maxWidth = "240px";
     contextMenu.style.display = "block";
