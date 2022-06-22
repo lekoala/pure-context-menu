@@ -95,21 +95,25 @@ class PureContextMenu {
    */
   _normalizePozition = (mouseX, mouseY, contextMenu) => {
     const scope = this._el;
-    const offset = 2;
+    const contextStyles = window.getComputedStyle(contextMenu);
+    // clientWidth exclude borders and we add 1px for good measure
+    const offset = parseInt(contextStyles.borderWidth) + 1;
 
     // compute what is the mouse position relative to the container element (scope)
     const bounds = scope.getBoundingClientRect();
 
-    let scopeX = mouseX - bounds.left;
-    let scopeY = mouseY - bounds.top;
+    let scopeX = mouseX;
+    let scopeY = mouseY;
 
-    if (["BODY", "HTML"].includes(scope.tagName)) {
-      scopeX += bounds.left;
-      scopeY += bounds.top;
+    if (!["BODY", "HTML"].includes(scope.tagName)) {
+      scopeX -= bounds.left;
+      scopeY -= bounds.top;
     }
 
+    const menuWidth = parseInt(contextStyles.width);
+
     // check if the element will go out of bounds
-    const outOfBoundsOnX = scopeX + contextMenu.clientWidth > scope.clientWidth;
+    const outOfBoundsOnX = scopeX + menuWidth > scope.clientWidth;
     const outOfBoundsOnY = scopeY + contextMenu.clientHeight > scope.clientHeight;
 
     let normalizedX = mouseX;
@@ -117,7 +121,7 @@ class PureContextMenu {
 
     // normalize on X
     if (outOfBoundsOnX) {
-      normalizedX = scope.clientWidth - contextMenu.clientWidth - offset;
+      normalizedX = scope.clientWidth - menuWidth - offset;
       if (!["BODY", "HTML"].includes(scope.tagName)) {
         normalizedX += bounds.left;
       }
@@ -175,11 +179,13 @@ class PureContextMenu {
     const contextMenu = this._buildContextMenu();
     document.querySelector("body").append(contextMenu);
 
-    // set the position
-    const { clientX: mouseX, clientY: mouseY } = event;
-    const { normalizedX, normalizedY } = this._normalizePozition(mouseX, mouseY, contextMenu);
+    // set the position already so that width can be computed
     contextMenu.style.position = "fixed";
     contextMenu.style.zIndex = this._options.zIndex;
+
+    // adjust the position according to mouse position
+    const { clientX: mouseX, clientY: mouseY } = event;
+    const { normalizedX, normalizedY } = this._normalizePozition(mouseX, mouseY, contextMenu);
     contextMenu.style.top = `${normalizedY}px`;
     contextMenu.style.left = `${normalizedX}px`;
 
