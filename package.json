@@ -1,7 +1,7 @@
 {
   "name": "pure-context-menu",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easy context menu manager for Bootstrap and vanilla js",
   "main": "pure-context-menu",
   "scripts": {
