@@ -95,13 +95,18 @@ class PureContextMenu {
    */
   _normalizePozition = (mouseX, mouseY, contextMenu) => {
     const scope = this._el;
-    const offset = 5;
+    const offset = 2;
 
     // compute what is the mouse position relative to the container element (scope)
     const bounds = scope.getBoundingClientRect();
 
-    const scopeX = mouseX - bounds.left;
-    const scopeY = mouseY - bounds.top;
+    let scopeX = mouseX - bounds.left;
+    let scopeY = mouseY - bounds.top;
+
+    if (["BODY", "HTML"].includes(scope.tagName)) {
+      scopeX += bounds.left;
+      scopeY += bounds.top;
+    }
 
     // check if the element will go out of bounds
     const outOfBoundsOnX = scopeX + contextMenu.clientWidth > scope.clientWidth;
@@ -112,12 +117,18 @@ class PureContextMenu {
 
     // normalize on X
     if (outOfBoundsOnX) {
-      normalizedX = bounds.left + scope.clientWidth - contextMenu.clientWidth - offset;
+      normalizedX = scope.clientWidth - contextMenu.clientWidth - offset;
+      if (!["BODY", "HTML"].includes(scope.tagName)) {
+        normalizedX += bounds.left;
+      }
     }
 
     // normalize on Y
     if (outOfBoundsOnY) {
-      normalizedY = bounds.top + scope.clientHeight - contextMenu.clientHeight - offset;
+      normalizedY = scope.clientHeight - contextMenu.clientHeight - offset;
+      if (!["BODY", "HTML"].includes(scope.tagName)) {
+        normalizedY += bounds.top;
+      }
     }
 
     return { normalizedX, normalizedY };
@@ -167,7 +178,7 @@ class PureContextMenu {
     // set the position
     const { clientX: mouseX, clientY: mouseY } = event;
     const { normalizedX, normalizedY } = this._normalizePozition(mouseX, mouseY, contextMenu);
-    contextMenu.style.position = "absolute";
+    contextMenu.style.position = "fixed";
     contextMenu.style.zIndex = this._options.zIndex;
     contextMenu.style.top = `${normalizedY}px`;
     contextMenu.style.left = `${normalizedX}px`;

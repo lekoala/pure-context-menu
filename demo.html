@@ -68,6 +68,23 @@
       ];
       let blockMenu = new PureContextMenu(document.querySelector("#block"), items2);
 
+      const items3 = [
+        {
+          label: "Fixed here",
+          callback: () => {
+            alert("You clicked here");
+          },
+        },
+        "-",
+        {
+          label: "Fixed there",
+          callback: () => {
+            alert("You clicked there");
+          },
+        },
+      ];
+      let fixedMenu = new PureContextMenu(document.querySelector("#fixed"), items3);
+
       console.log("menus loaded");
     </script>
   </head>
@@ -76,10 +93,27 @@
     <div class="container">
       <h1>Demo</h1>
 
-      <div style="width: 400px; height: 400px; padding: 2em; background: #ccc" id="block">Click in here for context menu</div>
+      <div style="width: 400px; height: 400px; padding: 2em; background: #ccc; overflow-y: scroll" id="block">
+        <p>Click in here for context menu</p>
+        <p style="display: block; margin-bottom: 400px">Scroll scroll scroll</p>
+        <p>Scroll scroll scroll</p>
+      </div>
+
+      <div
+        style="width: 400px; height: 400px; padding: 2em; background: #ddd; overflow-y: scroll; position: fixed; top: 50px; right: 50px"
+        id="fixed"
+      >
+        <p>Click in here for context menu</p>
+        <p style="display: block; margin-bottom: 400px">Scroll scroll scroll</p>
+        <p>Scroll scroll scroll</p>
+      </div>
 
       <div style="width: 200px; height: 200px; margin: 2em; padding: 2em; background: #ccc" id="target1">I'm target 1</div>
       <div style="width: 200px; height: 200px; margin: 2em; padding: 2em; background: #ccc" id="target2">I'm target 2</div>
+
+      <p style="display: block; margin-bottom: 100vh">Scroll the page</p>
+
+      <p>This is the end of the page</p>
     </div>
   </body>
 </html>
