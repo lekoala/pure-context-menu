@@ -16,6 +16,13 @@
     <script type="module">
       import PureContextMenu from "./pure-context-menu.js";
 
+      let menuEnabled = true;
+
+      document.getElementById("toggle").addEventListener("click", (e) => {
+        menuEnabled = !menuEnabled;
+        console.log("menu state: " + menuEnabled);
+      });
+
       const items = [
         {
           label: "Click here",
@@ -49,7 +56,11 @@
         },
       ];
       // bind to html if body does not have 100% height
-      let bodyMenu = new PureContextMenu(document.querySelector("html"), items);
+      let bodyMenu = new PureContextMenu(document.querySelector("html"), items, {
+        show: (e) => {
+          return menuEnabled;
+        },
+      });
 
       const items2 = [
         {
@@ -92,6 +103,8 @@
   <body>
     <div class="container">
       <h1>Demo</h1>
+
+      <button id="toggle" style="margin-bottom:2rem">disable/enable menu</button>
 
       <div style="width: 400px; height: 400px; padding: 2em; background: #ccc; overflow-y: scroll" id="block">
         <p>Click in here for context menu</p>
