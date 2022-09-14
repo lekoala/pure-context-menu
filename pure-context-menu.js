@@ -8,6 +8,7 @@ let baseOptions = {
   itemClass: "dropdown-item",
   zIndex: "9999",
   preventCloseOnClick: false,
+  show: event => true,
 };
 
 /**
@@ -166,6 +167,9 @@ class PureContextMenu {
    * @param {MouseEvent} event
    */
   _onShowContextMenu = (event) => {
+    if (!this._options.show(event)) {
+      return;
+    }
     event.preventDefault();
     event.stopPropagation();
 

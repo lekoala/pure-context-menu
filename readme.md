@@ -82,6 +82,7 @@ Options can be either passed to the constructor (eg: optionName) or globally upd
 | itemClass           | "dropdown-item"     | Class for items                          |
 | zIndex              | 9999                | z-index assigned to the menu             |
 | preventCloseOnClick | false               | Global behaviour for items when clicking |
+| show                | event => true       | Whether to show menu based on event      |
 
 ## Browser supports
 
