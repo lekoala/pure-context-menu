@@ -56,7 +56,7 @@ Easy context menu use default Bootstrap styles so you don't need extra css. Othe
 
 ### Prevent close on click
 
-By default, clicking on an item will close them menu. You can control this with `preventCloseOnClick`
+By default, clicking on an item will close the menu. You can control this with `preventCloseOnClick`
 
 ### Determining target
 
@@ -72,7 +72,7 @@ Surprisingly, modern mobile browsers translate long press to a contextmenu event
 
 ## Options
 
-Options can be either passed to the constructor (eg: optionName) or globally updated using `EasyContextMenu.updateGlobalOptions`
+Options can be either passed to the constructor (eg: optionName) or globally updated using `PureContextMenu.updateGlobalOptions`
 
 | Name                | Default             | Description                              |
 | ------------------- | ------------------- | ---------------------------------------- |
