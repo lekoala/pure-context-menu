@@ -1,5 +1,3 @@
-"use strict";
-
 let globalListenerSet = false;
 let baseOptions = {
   contextMenuClass: "pure-context-menu",
@@ -8,7 +6,7 @@ let baseOptions = {
   itemClass: "dropdown-item",
   zIndex: "9999",
   preventCloseOnClick: false,
-  show: event => true,
+  show: (event) => true,
 };
 
 /**
@@ -32,14 +30,27 @@ class PureContextMenu {
 
     this._options = Object.assign(baseOptions, opts);
 
-    // bind the menu
-    el.oncontextmenu = this._onShowContextMenu;
+    // bind the menu on context menu
+    el.addEventListener("contextmenu", this);
+
+    // add also long press support, this helps with ios browsers
+    // include https://cdn.jsdelivr.net/npm/long-press-event@2.4/dist/long-press-event.min.js in your pages
+    el.addEventListener("long-press", this);
 
     // close if the user clicks outside of the menu
     if (!globalListenerSet) {
-      document.addEventListener("click", this._onDocumentClick);
+      document.addEventListener("click", this);
       globalListenerSet = true;
     }
+  }
+
+  /**
+   * @link https://gist.github.com/WebReflection/ec9f6687842aa385477c4afca625bbf4#handling-events
+   * @param {Event} event
+   */
+  handleEvent(event) {
+    const type = event.type === "long-press" ? "contextmenu" : event.type;
+    this[`on${type}`](event);
   }
 
   /**
@@ -94,7 +105,7 @@ class PureContextMenu {
    * @param {number} mouseY
    * @param {HTMLElement} contextMenu
    */
-  _normalizePozition = (mouseX, mouseY, contextMenu) => {
+  _normalizePosition = (mouseX, mouseY, contextMenu) => {
     const scope = this._el;
     const contextStyles = window.getComputedStyle(contextMenu);
     // clientWidth exclude borders and we add 1px for good measure
@@ -151,7 +162,8 @@ class PureContextMenu {
 
       const htmlEl = contextMenu.children[index];
 
-      htmlEl.onclick = () => {
+      // We also need to listen on touchstart to avoid "double tap" issue
+      htmlEl.ontouchstart = htmlEl.onclick = () => {
         menuItem.callback(this._currentEvent);
 
         // do not close the menu if set
@@ -166,7 +178,7 @@ class PureContextMenu {
   /**
    * @param {MouseEvent} event
    */
-  _onShowContextMenu = (event) => {
+  oncontextmenu = (event) => {
     if (!this._options.show(event)) {
       return;
     }
@@ -188,8 +200,9 @@ class PureContextMenu {
     contextMenu.style.zIndex = this._options.zIndex;
 
     // adjust the position according to mouse position
-    const { clientX: mouseX, clientY: mouseY } = event;
-    const { normalizedX, normalizedY } = this._normalizePozition(mouseX, mouseY, contextMenu);
+    const mouseX = event.detail.clientX ?? event.clientX;
+    const mouseY = event.detail.clientY ?? event.clientY;
+    const { normalizedX, normalizedY } = this._normalizePosition(mouseX, mouseY, contextMenu);
     contextMenu.style.top = `${normalizedY}px`;
     contextMenu.style.left = `${normalizedX}px`;
 
@@ -204,7 +217,7 @@ class PureContextMenu {
    * Used to determine if the user has clicked outside of the context menu and if so to close it
    * @param {MouseEvent} event
    */
-  _onDocumentClick = (event) => {
+  onclick = (event) => {
     const clickedTarget = event.target;
     if (clickedTarget.closest(`.${this._options.contextMenuClass}`)) {
       return;
@@ -217,9 +230,10 @@ class PureContextMenu {
    */
   off() {
     this._removeExistingContextMenu();
-    document.removeEventListener("click", this._onDocumentClick);
+    document.removeEventListener("click", this);
     globalListenerSet = false;
-    this._el.oncontextmenu = null;
+    this._el.removeEventListener("contextmenu", this);
+    this._el.removeEventListener("long-press", this);
   }
 }
 

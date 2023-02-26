@@ -70,6 +70,12 @@ Simply pass "-" in the list of elements to mark dividers.
 
 Surprisingly, modern mobile browsers translate long press to a contextmenu event that it works out of the box :-)
 
+If it's not working, `long-press` is supported, simply add it to your pages
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/long-press-event@2.4.6/dist/long-press-event.min.js" type="module"></script>
+```
+
 ## Options
 
 Options can be either passed to the constructor (eg: optionName) or globally updated using `PureContextMenu.updateGlobalOptions`
