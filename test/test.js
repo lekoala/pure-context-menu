@@ -55,9 +55,9 @@ test("it is built on right click", (t) => {
   let body = document.querySelector("body");
   let inst = new PureContextMenu(body, items);
   t.is(document.querySelector(".pure-context-menu"), null);
-  body.dispatchEvent(new Event("contextmenu"));
+  body.dispatchEvent(new MouseEvent("contextmenu"));
   let menu = document.querySelector(".pure-context-menu");
-  t.assert(menu?.constructor?.name === "HTMLUListElement", menu ? "It was " + menu.constructor.name : "No menu");
+  t.assert(menu instanceof HTMLElement);
   inst.off();
   t.is(document.querySelector(".pure-context-menu"), null);
 });
