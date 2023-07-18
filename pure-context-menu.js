@@ -294,7 +294,7 @@ class PureContextMenu {
    */
   _isCurrentTarget = (event) => {
     const closestMenu = event.target.closest(`.${this._options.contextMenuClass}`);
-    if (closestMenu == this._contextMenu) {
+    if (closestMenu == this._contextMenu && this._contextMenu) {
       return true;
     }
     return false;
