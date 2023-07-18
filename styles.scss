@@ -6,23 +6,29 @@
   margin: 0;
   padding: 0;
   display: block;
+  background-clip: padding-box;
+
   .dropdown-item {
     display: block;
     box-sizing: border-box;
     width: 100%;
     padding: 0.5rem;
+
     &:hover {
       background: #eee;
     }
   }
+
   li:first-child .dropdown-item {
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
   }
+
   li:last-child .dropdown-item {
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
   }
+
   .dropdown-divider {
     margin: 0;
   }

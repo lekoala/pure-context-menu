@@ -12,7 +12,7 @@
   <meta name="theme-color" content="#eeeeee" media="(prefers-color-scheme: dark)" />
 
   <link href="styles.min.css" rel="stylesheet" />
-  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet" /> -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" type="module"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/long-press-event@2.4/dist/long-press-event.min.js" type="module"></script>
@@ -29,6 +29,7 @@
       menuEnabled = !menuEnabled;
       console.log("menu state: " + menuEnabled);
     });
+    ;
 
     const items = [
       {
@@ -62,9 +63,20 @@
         },
       },
     ];
+    const otherItems = [
+      {
+        label: "Only one item here"
+      }
+    ];
     // bind to html if body does not have 100% height
     let bodyMenu = new PureContextMenu(document.querySelector("html"), items, {
-      show: (e) => {
+      show: (e, inst) => {
+        if (e.target.id == "target1") {
+          inst.setItems(otherItems);
+        }
+        else {
+          inst.setItems(items);
+        }
         return menuEnabled;
       },
     });
@@ -73,11 +85,11 @@
       {
         label: "<l-i name='star'></l-i> Block here",
         html: true,
+        classes: ['list-group-item-primary'],
         callback: () => {
           alert("You clicked here");
         },
       },
-      "-",
       {
         label: "<l-i name='user'></l-i> Block there",
         html: true,
@@ -86,7 +98,9 @@
         },
       },
     ];
-    let blockMenu = new PureContextMenu(document.querySelector("#block"), items2);
+    let blockMenu = new PureContextMenu(document.querySelector("#block"), items2, {
+      useLists: true,
+    });
 
     const items3 = [
       {
@@ -106,6 +120,12 @@
     let fixedMenu = new PureContextMenu(document.querySelector("#fixed"), items3);
 
     console.log("menus loaded");
+
+    document.getElementById("kill").addEventListener("click", (e) => {
+      fixedMenu.off();
+      blockMenu.off();
+      bodyMenu.off();
+    })
   </script>
 </head>
 
@@ -114,6 +134,7 @@
     <h1>Demo</h1>
 
     <button id="toggle" style="margin-bottom: 2rem">disable/enable menu</button>
+    <button id="kill" style="margin-bottom: 2rem">kill instances</button>
 
     <div style="width: 400px; height: 400px; padding: 2em; background: #ccc; overflow-y: scroll" id="block">
       <p>Click in here for context menu</p>

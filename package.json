@@ -11,6 +11,7 @@
     "watch": "npm run build -- --watch",
     "build-min": "npm run build && git add -A && git commit -m \"build min file\"",
     "update-deps": "npx npm-check-updates -u",
+    "jsdoc": "npx jsdoc-to-markdown pure-context-menu.js",
     "bump": "npm run build-min && npm version patch"
   },
   "repository": {

@@ -53,10 +53,11 @@ let bodyMenu = new PureContextMenu(document.querySelector("html"), items);
 ### Built-in styles for Bootstrap
 
 Easy context menu use default Bootstrap styles so you don't need extra css. Otherwise, look at `styles.scss` to see some default styles you can use.
+It can either use dropdown or list groups styles.
 
 ### Prevent close on click
 
-By default, clicking on an item will close the menu. You can control this with `preventCloseOnClick`
+By default, clicking on an item will close the menu. You can control this with `preventCloseOnClick`.
 
 ### Determining target
 
@@ -80,15 +81,28 @@ If it's not working, `long-press` is supported, simply add it to your pages
 
 Options can be either passed to the constructor (eg: optionName) or globally updated using `PureContextMenu.updateGlobalOptions`
 
-| Name                | Default             | Description                              |
-| ------------------- | ------------------- | ---------------------------------------- |
-| contextMenuClass    | "pure-context-menu" | The class used for selecting the menu    |
-| dropdownClass       | "dropdown-menu"     | Another class to style the menu          |
-| dividerClass        | "dropdown-divider"  | Class for dividers                       |
-| itemClass           | "dropdown-item"     | Class for items                          |
-| zIndex              | 9999                | z-index assigned to the menu             |
-| preventCloseOnClick | false               | Global behaviour for items when clicking |
-| show                | event => true       | Whether to show menu based on event      |
+| Name                | Type                  | Description                              |
+| ------------------- | --------------------- | ---------------------------------------- |
+| contextMenuClass    | <code>String</code>   | Class applied for holder element         |
+| dropdownClass       | <code>String</code>   | Class applied for dropdown               |
+| dividerClass        | <code>String</code>   | Class applied to the divider item        |
+| itemClass           | <code>String</code>   | Class applied to the menu item           |
+| zIndex              | <code>Number</code>   | z-index assigned to the menu             |
+| preventCloseOnClick | <code>Boolean</code>  | Global behaviour for items when clicking |
+| useLists            | <code>Boolean</code>  | Enable list groups                       |
+| listClass           | <code>String</code>   | Class applied to the list                |
+| listItemClasses     | <code>Array</code>    | Class applied to the list item           |
+| show                | <code>function</code> | Whether to show menu based on event      |
+
+## Item
+
+| Name                  | Type                  |
+| --------------------- | --------------------- |
+| label                 | <code>String</code>   |
+| [html]                | <code>Boolean</code>  |
+| [classes]             | <code>Array</code>    |
+| [preventCloseOnClick] | <code>Boolean</code>  |
+| [callback]            | <code>function</code> |
 
 ## Browser supports
 

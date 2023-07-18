@@ -1,11 +1,14 @@
 /**
  * @typedef Config
- * @property {String} contextMenuClass Class applied to the context menu
- * @property {String} dropdownClass Class applied to the dropdown menu
+ * @property {String} contextMenuClass Class applied for holder element
+ * @property {String} dropdownClass Class applied for dropdown
  * @property {String} dividerClass Class applied to the divider item
  * @property {String} itemClass Class applied to the menu item
  * @property {Number} zIndex z-index assigned to the menu
  * @property {Boolean} preventCloseOnClick Global behaviour for items when clicking
+ * @property {Boolean} useLists Enable list groups
+ * @property {String} listClass Class applied to the list
+ * @property {Array} listItemClasses Class applied to the list item
  * @property {Function} show Whether to show menu based on event
  */
 let baseOptions = {
@@ -15,13 +18,19 @@ let baseOptions = {
   itemClass: "dropdown-item",
   zIndex: "9999",
   preventCloseOnClick: false,
-  show: (event) => true,
+  useLists: false,
+  listClass: "list-group",
+  listItemClasses: ["list-group-item", "list-group-item-action"],
+  show: (event, inst) => true,
 };
+
+let instances = new Set();
 
 /**
  * @typedef Item
  * @property {String} label
  * @property {Boolean} [html]
+ * @property {Array} [classes]
  * @property {Boolean} [preventCloseOnClick]
  * @property {Function} [callback]
  */
@@ -32,6 +41,7 @@ let baseOptions = {
  */
 class PureContextMenu {
   _el;
+  _contextMenu;
   _items;
   _options;
   _currentEvent;
@@ -53,9 +63,14 @@ class PureContextMenu {
     this._el = el;
 
     /**
+     * @type {HTMLElement}
+     */
+    this._contextMenu = null;
+
+    /**
      * @type {Config}
      */
-    this._options = Object.assign(baseOptions, opts);
+    this._options = Object.assign({}, baseOptions, opts);
 
     // bind the menu on context menu
     // add also long press support, this helps with ios browsers
@@ -65,17 +80,25 @@ class PureContextMenu {
     });
 
     // close if the user clicks outside of the menu
-    document.addEventListener("click", this);
+    ["click", "touchstart"].forEach((type) => {
+      document.addEventListener(type, this);
+    });
+
+    instances.add(this);
   }
 
   /**
    * @link https://gist.github.com/WebReflection/ec9f6687842aa385477c4afca625bbf4#handling-events
    * @param {Event} event
    */
-  handleEvent(event) {
-    const type = event.type === "long-press" ? "contextmenu" : event.type;
+  handleEvent = (event) => {
+    const aliases = {
+      "long-press": "contextmenu",
+      touchstart: "click",
+    };
+    const type = aliases[event.type] || event.type;
     this[`on${type}`](event);
-  }
+  };
 
   /**
    * @param {Config} opts
@@ -92,19 +115,43 @@ class PureContextMenu {
   }
 
   /**
+   * @returns {Item[]}
+   */
+  getItems() {
+    return this._items;
+  }
+
+  /**
+   * @param {Item[]} items
+   */
+  setItems(items) {
+    this._items = items;
+  }
+
+  /**
    * Create the menu
    * @returns {HTMLElement}
    */
   _buildContextMenu = () => {
+    const useLists = this._options.useLists;
     const contextMenu = document.createElement("ul");
     contextMenu.style.minWidth = "120px";
     contextMenu.style.maxWidth = "240px";
     contextMenu.style.display = "block";
-    contextMenu.classList.add(this._options.contextMenuClass);
-    contextMenu.classList.add(this._options.dropdownClass);
+    contextMenu.classList.add(...[this._options.contextMenuClass, this._options.dropdownClass]);
+    if (useLists) {
+      contextMenu.classList.add(this._options.listClass);
+    }
 
     for (const item of this._items) {
       const child = document.createElement("li");
+      if (useLists) {
+        //@link https://getbootstrap.com/docs/5.3/components/list-group/#for-links-and-buttons
+        child.classList.add(...this._options.listItemClasses);
+      }
+      if (item.classes) {
+        child.classList.add(...item.classes);
+      }
       if (item === "-") {
         const divider = document.createElement("hr");
         divider.classList.add(this._options.dividerClass);
@@ -118,10 +165,11 @@ class PureContextMenu {
         }
         link.style.cursor = "pointer";
         link.style.whiteSpace = "normal";
-        link.classList.add(this._options.itemClass);
+        if (!useLists) {
+          link.classList.add(this._options.itemClass);
+        }
         child.appendChild(link);
       }
-
       contextMenu.appendChild(child);
     }
     return contextMenu;
@@ -178,38 +226,16 @@ class PureContextMenu {
     return { normalizedX, normalizedY };
   };
 
-  _removeExistingContextMenu = () => {
-    document.querySelector(`.${this._options.contextMenuClass}`)?.remove();
-  };
-
-  _bindCallbacks = (contextMenu) => {
-    this._items.forEach((menuItem, index) => {
-      if (menuItem === "-") {
-        return;
-      }
-
-      const htmlEl = contextMenu.children[index];
-
-      // We also need to listen on touchstart to avoid "double tap" issue
-      htmlEl.ontouchstart = htmlEl.onclick = () => {
-        if (menuItem.callback) {
-          menuItem.callback(this._currentEvent);
-        }
-
-        // do not close the menu if set
-        const preventCloseOnClick = menuItem.preventCloseOnClick ?? this._options.preventCloseOnClick ?? false;
-        if (!preventCloseOnClick) {
-          this._removeExistingContextMenu();
-        }
-      };
-    });
+  close = () => {
+    this._contextMenu?.remove();
+    this._contextMenu = null;
   };
 
   /**
    * @param {MouseEvent} event
    */
   oncontextmenu = (event) => {
-    if (!this._options.show(event)) {
+    if (!this._options.show(event, this)) {
       return;
     }
 
@@ -217,16 +243,22 @@ class PureContextMenu {
     event.preventDefault();
     event.stopPropagation();
 
+    // Close existing menus
+    instances.forEach((inst) => {
+      inst.close();
+    });
+
     // Don't do anything if clicked on the same menu
-    if (this._isCurrentTarget(event)) {
+    const closestMenu = event.target.closest(`.${this._options.contextMenuClass}`);
+    if (closestMenu) {
       return;
     }
 
-    // Store event for callbakcs
+    // Store event for callbacks, this allows to know what is the target that triggered the menu
     this._currentEvent = event;
 
     // the current context menu should disappear when a new one is displayed
-    this._removeExistingContextMenu();
+    this.close();
 
     // build and show on ui
     const contextMenu = this._buildContextMenu();
@@ -243,39 +275,72 @@ class PureContextMenu {
     contextMenu.style.top = `${normalizedY}px`;
     contextMenu.style.left = `${normalizedX}px`;
 
-    // bind the callbacks on each option
-    this._bindCallbacks(contextMenu);
+    // Store reference
+    this._contextMenu = contextMenu;
   };
 
-  _isCurrentTarget(event) {
-    const clickedTarget = event.target;
-    if (clickedTarget.closest(`.${this._options.contextMenuClass}`)) {
+  /**
+   * @param {MouseEvent} event
+   */
+  _isCurrentTarget = (event) => {
+    const closestMenu = event.target.closest(`.${this._options.contextMenuClass}`);
+    if (closestMenu == this._contextMenu) {
       return true;
     }
     return false;
-  }
+  };
+
+  /**
+   * @param {MouseEvent} event
+   */
+  _handleItemClick = (event) => {
+    const t = event.target;
+    /**
+     * @type {HTMLLIElement}
+     */
+    const li = t.closest(`li`);
+    if (li) {
+      const index = [...li.parentElement.childNodes].findIndex((item) => item === li);
+      const item = this._items[index];
+
+      if (item.callback) {
+        item.callback(this._currentEvent, this);
+
+        // do not close the menu if set
+        const preventCloseOnClick = item.preventCloseOnClick ?? this._options.preventCloseOnClick ?? false;
+        if (!preventCloseOnClick) {
+          this.close();
+        }
+      }
+    }
+  };
 
   /**
    * Used to determine if the user has clicked outside of the context menu and if so, close it
+   * Handles delegated events on menu items
    * @param {MouseEvent} event
    */
   onclick = (event) => {
-    if (this._isCurrentTarget()) {
+    if (this._isCurrentTarget(event)) {
+      this._handleItemClick(event);
       return;
     }
-    this._removeExistingContextMenu();
+    this.close();
   };
 
   /**
    * Remove all the event listeners that were registered for this feature
    */
-  off() {
-    this._removeExistingContextMenu();
-    document.removeEventListener("click", this);
+  off = () => {
+    instances.delete(this);
+    this.close();
+    ["click", "touchstart"].forEach((type) => {
+      document.removeEventListener(type, this);
+    });
     ["contextmenu", "long-press"].forEach((type) => {
       this._el.removeEventListener(type, this);
     });
-  }
+  };
 }
 
 export default PureContextMenu;
