@@ -103,6 +103,7 @@ Options can be either passed to the constructor (eg: optionName) or globally upd
 | [html]                | <code>Boolean</code>  |
 | [classes]             | <code>Array</code>    |
 | [preventCloseOnClick] | <code>Boolean</code>  |
+| [disabled]            | <code>Boolean</code>  |
 | [callback]            | <code>function</code> |
 
 ## Browser supports

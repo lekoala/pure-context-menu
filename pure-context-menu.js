@@ -4,6 +4,7 @@
  * @property {String} dropdownClass Class applied for dropdown
  * @property {String} dividerClass Class applied to the divider item
  * @property {String} itemClass Class applied to the menu item
+ * @property {String} disabledClass Class applied to the disabled items
  * @property {Number} zIndex z-index assigned to the menu
  * @property {Boolean} preventCloseOnClick Global behaviour for items when clicking
  * @property {Boolean} useLists Enable list groups
@@ -16,6 +17,7 @@ let baseOptions = {
   dropdownClass: "dropdown-menu",
   dividerClass: "dropdown-divider",
   itemClass: "dropdown-item",
+  disabledClass: "disabled",
   zIndex: "9999",
   preventCloseOnClick: false,
   useLists: false,
@@ -32,6 +34,7 @@ let instances = new Set();
  * @property {Boolean} [html]
  * @property {Array} [classes]
  * @property {Boolean} [preventCloseOnClick]
+ * @property {Boolean} [disabled]
  * @property {Function} [callback]
  */
 
@@ -148,6 +151,9 @@ class PureContextMenu {
       if (useLists) {
         //@link https://getbootstrap.com/docs/5.3/components/list-group/#for-links-and-buttons
         child.classList.add(...this._options.listItemClasses);
+        if (item.disabled) {
+          child.classList.add(this._options.disabledClass);
+        }
       }
       if (item.classes) {
         child.classList.add(...item.classes);
@@ -167,6 +173,9 @@ class PureContextMenu {
         link.style.whiteSpace = "normal";
         if (!useLists) {
           link.classList.add(this._options.itemClass);
+          if (item.disabled) {
+            link.classList.add(this._options.disabledClass);
+          }
         }
         child.appendChild(link);
       }

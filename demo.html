@@ -62,6 +62,10 @@
           alert("It didn't close");
         },
       },
+      {
+        label: "This is disabled",
+        disabled: true,
+      },
     ];
     const otherItems = [
       {
@@ -97,6 +101,10 @@
           alert("You clicked there");
         },
       },
+      {
+        label: "Disabled item",
+        disabled: true,
+      }
     ];
     let blockMenu = new PureContextMenu(document.querySelector("#block"), items2, {
       useLists: true,
