@@ -243,9 +243,6 @@ class PureContextMenu {
     contextMenu.style.top = `${normalizedY}px`;
     contextMenu.style.left = `${normalizedX}px`;
 
-    // disable context menu for it
-    contextMenu.oncontextmenu = (e) => e.preventDefault();
-
     // bind the callbacks on each option
     this._bindCallbacks(contextMenu);
   };
