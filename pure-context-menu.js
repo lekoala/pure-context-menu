@@ -213,8 +213,14 @@ class PureContextMenu {
       return;
     }
 
+    // Block regular context menu if our menu is shown
     event.preventDefault();
     event.stopPropagation();
+
+    // Don't do anything if clicked on the same menu
+    if (this._isCurrentTarget(event)) {
+      return;
+    }
 
     // Store event for callbakcs
     this._currentEvent = event;
@@ -244,13 +250,20 @@ class PureContextMenu {
     this._bindCallbacks(contextMenu);
   };
 
+  _isCurrentTarget(event) {
+    const clickedTarget = event.target;
+    if (clickedTarget.closest(`.${this._options.contextMenuClass}`)) {
+      return true;
+    }
+    return false;
+  }
+
   /**
    * Used to determine if the user has clicked outside of the context menu and if so, close it
    * @param {MouseEvent} event
    */
   onclick = (event) => {
-    const clickedTarget = event.target;
-    if (clickedTarget.closest(`.${this._options.contextMenuClass}`)) {
+    if (this._isCurrentTarget()) {
       return;
     }
     this._removeExistingContextMenu();
