@@ -33,3 +33,26 @@
     margin: 0;
   }
 }
+
+// Animate menu
+@keyframes dropdownAnimation {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pure-context-menu.dropdown-menu {
+    --dropdown-animation-factor: -2;
+    --dropdown-animation-end-factor: 1;
+    animation-name: dropdownAnimation;
+    animation-duration: 0.25s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+  }
+}

@@ -28,4 +28,38 @@
 .pure-context-menu.dropdown-menu .dropdown-divider {
   margin: 0;
 }
+
+@-webkit-keyframes dropdownAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dropdownAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pure-context-menu.dropdown-menu {
+    --dropdown-animation-factor: -2;
+    --dropdown-animation-end-factor: 1;
+    -webkit-animation-name: dropdownAnimation;
+            animation-name: dropdownAnimation;
+    -webkit-animation-duration: 0.25s;
+            animation-duration: 0.25s;
+    -webkit-animation-iteration-count: 1;
+            animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out;
+    -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+  }
+}
 /*# sourceMappingURL=styles.css.map */
