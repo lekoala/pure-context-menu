@@ -1,4 +1,13 @@
-let globalListenerSet = false;
+/**
+ * @typedef Config
+ * @property {String} contextMenuClass Class applied to the context menu
+ * @property {String} dropdownClass Class applied to the dropdown menu
+ * @property {String} dividerClass Class applied to the divider item
+ * @property {String} itemClass Class applied to the menu item
+ * @property {Number} zIndex z-index assigned to the menu
+ * @property {Boolean} preventCloseOnClick Global behaviour for items when clicking
+ * @property {Function} show Whether to show menu based on event
+ */
 let baseOptions = {
   contextMenuClass: "pure-context-menu",
   dropdownClass: "dropdown-menu",
@@ -8,6 +17,14 @@ let baseOptions = {
   preventCloseOnClick: false,
   show: (event) => true,
 };
+
+/**
+ * @typedef Item
+ * @property {String} label
+ * @property {Boolean} [html]
+ * @property {Boolean} [preventCloseOnClick]
+ * @property {Function} [callback]
+ */
 
 /**
  * Easily manage context menus
@@ -25,23 +42,30 @@ class PureContextMenu {
    * @param {object} opts
    */
   constructor(el, items, opts) {
+    /**
+     * @type {Item[]}
+     */
     this._items = items;
+
+    /**
+     * @type {HTMLElement}
+     */
     this._el = el;
 
+    /**
+     * @type {Config}
+     */
     this._options = Object.assign(baseOptions, opts);
 
     // bind the menu on context menu
-    el.addEventListener("contextmenu", this);
-
     // add also long press support, this helps with ios browsers
     // include https://cdn.jsdelivr.net/npm/long-press-event@2.4/dist/long-press-event.min.js in your pages
-    el.addEventListener("long-press", this);
+    ["contextmenu", "long-press"].forEach((type) => {
+      el.addEventListener(type, this);
+    });
 
     // close if the user clicks outside of the menu
-    if (!globalListenerSet) {
-      document.addEventListener("click", this);
-      globalListenerSet = true;
-    }
+    document.addEventListener("click", this);
   }
 
   /**
@@ -54,14 +78,14 @@ class PureContextMenu {
   }
 
   /**
-   * @param {object} opts
+   * @param {Config} opts
    */
   static updateDefaultOptions(opts) {
     baseOptions = Object.assign(baseOptions, opts);
   }
 
   /**
-   * @returns {object}
+   * @returns {Config}
    */
   static getDefaultOptions() {
     return baseOptions;
@@ -87,7 +111,11 @@ class PureContextMenu {
         child.appendChild(divider);
       } else {
         const link = document.createElement("a");
-        link.innerText = item.label;
+        if (item.html) {
+          link.innerHTML = item.label;
+        } else {
+          link.innerText = item.label;
+        }
         link.style.cursor = "pointer";
         link.style.whiteSpace = "normal";
         link.classList.add(this._options.itemClass);
@@ -164,7 +192,9 @@ class PureContextMenu {
 
       // We also need to listen on touchstart to avoid "double tap" issue
       htmlEl.ontouchstart = htmlEl.onclick = () => {
-        menuItem.callback(this._currentEvent);
+        if (menuItem.callback) {
+          menuItem.callback(this._currentEvent);
+        }
 
         // do not close the menu if set
         const preventCloseOnClick = menuItem.preventCloseOnClick ?? this._options.preventCloseOnClick ?? false;
@@ -182,6 +212,7 @@ class PureContextMenu {
     if (!this._options.show(event)) {
       return;
     }
+
     event.preventDefault();
     event.stopPropagation();
 
@@ -214,7 +245,7 @@ class PureContextMenu {
   };
 
   /**
-   * Used to determine if the user has clicked outside of the context menu and if so to close it
+   * Used to determine if the user has clicked outside of the context menu and if so, close it
    * @param {MouseEvent} event
    */
   onclick = (event) => {
@@ -231,9 +262,9 @@ class PureContextMenu {
   off() {
     this._removeExistingContextMenu();
     document.removeEventListener("click", this);
-    globalListenerSet = false;
-    this._el.removeEventListener("contextmenu", this);
-    this._el.removeEventListener("long-press", this);
+    ["contextmenu", "long-press"].forEach((type) => {
+      this._el.removeEventListener(type, this);
+    });
   }
 }
 
