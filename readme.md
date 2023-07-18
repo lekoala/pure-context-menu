@@ -53,7 +53,7 @@ let bodyMenu = new PureContextMenu(document.querySelector("html"), items);
 ### Built-in styles for Bootstrap
 
 Easy context menu use default Bootstrap styles so you don't need extra css. Otherwise, look at `styles.scss` to see some default styles you can use.
-It can either use dropdown or list groups styles.
+It can either use [dropdown](https://getbootstrap.com/docs/5.3/components/dropdowns/#single-button) or [list groups](https://getbootstrap.com/docs/5.3/components/list-group/#for-links-and-buttons) styles.
 
 ### Prevent close on click
 
@@ -62,10 +62,11 @@ By default, clicking on an item will close the menu. You can control this with `
 ### Determining target
 
 The callback receive the event that originally opened the context menu. This allow determing the target under the context menu.
+If you need to adjust items based on the current target, use `setItems` during the `show` callback.
 
 ### Dividers
 
-Simply pass "-" in the list of elements to mark dividers.
+Simply pass "-" in the list of elements to mark dividers. This doesn't work well with list group styles since items are already separated.
 
 ### Mobile support
 
