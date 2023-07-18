@@ -74,6 +74,7 @@
     ];
     // bind to html if body does not have 100% height
     let bodyMenu = new PureContextMenu(document.querySelector("html"), items, {
+      dropdownClass: "dropdown-menu test-class",
       show: (e, inst) => {
         if (e.target.id == "target1") {
           inst.setItems(otherItems);

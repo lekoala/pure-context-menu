@@ -1,7 +1,7 @@
 /**
  * @typedef Config
  * @property {String} contextMenuClass Class applied for holder element
- * @property {String} dropdownClass Class applied for dropdown
+ * @property {String} dropdownClass Class applied for dropdown. Accepts space separated classes
  * @property {String} dividerClass Class applied to the divider item
  * @property {String} itemClass Class applied to the menu item
  * @property {String} disabledClass Class applied to the disabled items
@@ -141,7 +141,8 @@ class PureContextMenu {
     contextMenu.style.minWidth = "120px";
     contextMenu.style.maxWidth = "240px";
     contextMenu.style.display = "block";
-    contextMenu.classList.add(...[this._options.contextMenuClass, this._options.dropdownClass]);
+    contextMenu.classList.add(this._options.contextMenuClass);
+    contextMenu.classList.add(...this._options.dropdownClass.split(" "));
     if (useLists) {
       contextMenu.classList.add(this._options.listClass);
     }
