@@ -3,26 +3,28 @@
  * @property {String} contextMenuClass Class applied for holder element
  * @property {String} dropdownClass Class applied for dropdown. Accepts space separated classes
  * @property {String} dividerClass Class applied to the divider item
- * @property {String} itemClass Class applied to the menu item
+ * @property {String} menuItemClass Class applied to the li in all cases.
+ * @property {String} itemClass Class applied to the menu item. Accepts space separated classes
  * @property {String} disabledClass Class applied to the disabled items
  * @property {Number} zIndex z-index assigned to the menu
  * @property {Boolean} preventCloseOnClick Global behaviour for items when clicking
  * @property {Boolean} useLists Enable list groups
  * @property {String} listClass Class applied to the list
- * @property {Array} listItemClasses Class applied to the list item
+ * @property {String} listItemClass Class applied to the list item. Accepts space separated classes
  * @property {Function} show Whether to show menu based on event
  */
 let baseOptions = {
   contextMenuClass: "pure-context-menu",
   dropdownClass: "dropdown-menu",
   dividerClass: "dropdown-divider",
-  itemClass: "dropdown-item",
+  menuItemClass: "pure-context-menu-item",
+  itemClass: "dropdown-item pure-context-menu-item",
   disabledClass: "disabled",
   zIndex: "9999",
   preventCloseOnClick: false,
   useLists: false,
   listClass: "list-group",
-  listItemClasses: ["list-group-item", "list-group-item-action"],
+  listItemClass: "list-group-item list-group-item-action",
   show: (event, inst) => true,
 };
 
@@ -149,9 +151,12 @@ class PureContextMenu {
 
     for (const item of this._items) {
       const child = document.createElement("li");
+      child.classList.add(this._options.menuItemClass);
+
+      // With lists, classes are applied on li
       if (useLists) {
         //@link https://getbootstrap.com/docs/5.3/components/list-group/#for-links-and-buttons
-        child.classList.add(...this._options.listItemClasses);
+        child.classList.add(...this._options.listItemClass.split(" "));
         if (item.disabled) {
           child.classList.add(this._options.disabledClass);
         }
@@ -172,8 +177,10 @@ class PureContextMenu {
         }
         link.style.cursor = "pointer";
         link.style.whiteSpace = "normal";
+
+        // Without lists, classes are applied on child item
         if (!useLists) {
-          link.classList.add(this._options.itemClass);
+          link.classList.add(...this._options.itemClass.split(" "));
           if (item.disabled) {
             link.classList.add(this._options.disabledClass);
           }
