@@ -95,6 +95,7 @@ Options can be either passed to the constructor (eg: optionName) or globally upd
 | useLists            | <code>Boolean</code>  | Enable list groups                                              |
 | listClass           | <code>String</code>   | Class applied to the list                                       |
 | listItemClass       | <code>String</code>   | Class applied to the list item. Accepts space separated classes |
+| fastClick           | <code>Boolean</code>  | Triggers click on touchstart for mobile devices                 |
 | show                | <code>function</code> | Whether to show menu based on event                             |
 
 ## Item

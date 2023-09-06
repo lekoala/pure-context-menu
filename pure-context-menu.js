@@ -11,6 +11,7 @@
  * @property {Boolean} useLists Enable list groups
  * @property {String} listClass Class applied to the list
  * @property {String} listItemClass Class applied to the list item. Accepts space separated classes
+ * @property {Boolean} fastClick Triggers click on touchstart for mobile devices
  * @property {Function} show Whether to show menu based on event
  */
 let baseOptions = {
@@ -25,6 +26,7 @@ let baseOptions = {
   useLists: false,
   listClass: "list-group",
   listItemClass: "list-group-item list-group-item-action",
+  fastClick: false,
   show: (event, inst) => true,
 };
 
@@ -85,11 +87,18 @@ class PureContextMenu {
     });
 
     // close if the user clicks outside of the menu
-    ["click", "touchstart"].forEach((type) => {
+    this._clickEvents().forEach((type) => {
       document.addEventListener(type, this);
     });
 
     instances.add(this);
+  }
+
+  _clickEvents() {
+    if (this._options.fastClick) {
+      return ["click", "touchstart"];
+    }
+    return ["click"];
   }
 
   /**
@@ -351,7 +360,7 @@ class PureContextMenu {
   off = () => {
     instances.delete(this);
     this.close();
-    ["click", "touchstart"].forEach((type) => {
+    this._clickEvents().forEach((type) => {
       document.removeEventListener(type, this);
     });
     ["contextmenu", "long-press"].forEach((type) => {
