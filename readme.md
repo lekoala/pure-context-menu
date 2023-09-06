@@ -108,6 +108,10 @@ Options can be either passed to the constructor (eg: optionName) or globally upd
 | [disabled]            | <code>Boolean</code>  |
 | [callback]            | <code>function</code> |
 
+## Demo
+
+https://codepen.io/lekoalabe/pen/LYJbGYg
+
 ## Browser supports
 
 Modern browsers (edge, chrome, firefox, safari... not IE11). [Add a warning if necessary](https://github.com/lekoala/nomodule-browser-warning.js/).
