@@ -12,6 +12,7 @@
  * @property {String} listClass Class applied to the list
  * @property {String} listItemClass Class applied to the list item. Accepts space separated classes
  * @property {Boolean} fastClick Triggers click on touchstart for mobile devices
+ * @property {Boolean} closeIfOpen Close menu with right close if already opened
  * @property {Function} show Whether to show menu based on event
  */
 let baseOptions = {
@@ -27,6 +28,7 @@ let baseOptions = {
   listClass: "list-group",
   listItemClass: "list-group-item list-group-item-action",
   fastClick: false,
+  closeIfOpen: false,
   show: (event, inst) => true,
 };
 
@@ -252,9 +254,16 @@ class PureContextMenu {
     return { normalizedX, normalizedY };
   };
 
+  /**
+   * @returns {Boolean}
+   */
   close = () => {
-    this._contextMenu?.remove();
-    this._contextMenu = null;
+    if (this._contextMenu) {
+      this._contextMenu.remove();
+      this._contextMenu = null;
+      return true;
+    }
+    return false;
   };
 
   /**
@@ -270,9 +279,18 @@ class PureContextMenu {
     event.stopPropagation();
 
     // Close existing menus
+    let closed = false;
     instances.forEach((inst) => {
-      inst.close();
+      const wasClosed = inst.close();
+      if (wasClosed && inst === this) {
+        closed = true;
+      }
     });
+
+    // Don't open again if option is set
+    if (this._options.closeIfOpen && closed) {
+      return;
+    }
 
     // Don't do anything if clicked on the same menu
     const closestMenu = event.target.closest(`.${this._options.contextMenuClass}`);

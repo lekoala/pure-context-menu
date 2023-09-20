@@ -82,21 +82,22 @@ If it's not working, `long-press` is supported, simply add it to your pages
 
 Options can be either passed to the constructor (eg: optionName) or globally updated using `PureContextMenu.updateGlobalOptions`
 
-| Name                | Type                  | Description                                                     |
-| ------------------- | --------------------- | --------------------------------------------------------------- |
-| contextMenuClass    | <code>String</code>   | Class applied for holder element                                |
-| dropdownClass       | <code>String</code>   | Class applied for dropdown. Accepts space separated classes     |
-| dividerClass        | <code>String</code>   | Class applied to the divider item                               |
-| menuItemClass       | <code>String</code>   | Class applied to the li in all cases.                           |
-| itemClass           | <code>String</code>   | Class applied to the menu item. Accepts space separated classes |
-| disabledClass       | <code>String</code>   | Class applied to the disabled items                             |
-| zIndex              | <code>Number</code>   | z-index assigned to the menu                                    |
-| preventCloseOnClick | <code>Boolean</code>  | Global behaviour for items when clicking                        |
-| useLists            | <code>Boolean</code>  | Enable list groups                                              |
-| listClass           | <code>String</code>   | Class applied to the list                                       |
-| listItemClass       | <code>String</code>   | Class applied to the list item. Accepts space separated classes |
-| fastClick           | <code>Boolean</code>  | Triggers click on touchstart for mobile devices                 |
-| show                | <code>function</code> | Whether to show menu based on event                             |
+| Name | Type | Description |
+| --- | --- | --- |
+| contextMenuClass | <code>String</code> | Class applied for holder element |
+| dropdownClass | <code>String</code> | Class applied for dropdown. Accepts space separated classes |
+| dividerClass | <code>String</code> | Class applied to the divider item |
+| menuItemClass | <code>String</code> | Class applied to the li in all cases. |
+| itemClass | <code>String</code> | Class applied to the menu item. Accepts space separated classes |
+| disabledClass | <code>String</code> | Class applied to the disabled items |
+| zIndex | <code>Number</code> | z-index assigned to the menu |
+| preventCloseOnClick | <code>Boolean</code> | Global behaviour for items when clicking |
+| useLists | <code>Boolean</code> | Enable list groups |
+| listClass | <code>String</code> | Class applied to the list |
+| listItemClass | <code>String</code> | Class applied to the list item. Accepts space separated classes |
+| fastClick | <code>Boolean</code> | Triggers click on touchstart for mobile devices |
+| closeIfOpen | <code>Boolean</code> | Close menu with right close if already opened |
+| show | <code>function</code> | Whether to show menu based on event |
 
 ## Item
 
