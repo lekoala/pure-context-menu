@@ -84,7 +84,7 @@ class PureContextMenu {
     // bind the menu on context menu
     // add also long press support, this helps with ios browsers
     // include https://cdn.jsdelivr.net/npm/long-press-event@2.4/dist/long-press-event.min.js in your pages
-    ["contextmenu", "long-press"].forEach((type) => {
+    ["contextmenu", "long-press", "keydown"].forEach((type) => {
       el.addEventListener(type, this);
     });
 
@@ -267,6 +267,21 @@ class PureContextMenu {
   };
 
   /**
+   * keypress doesn't send arrow keys, so we use keydown
+   * @param {KeyboardEvent} event
+   */
+  onkeydown(event) {
+    let key = event.keyCode || event.key;
+
+    switch (key) {
+      case 27:
+      case "Escape":
+        this.close();
+        break;
+    }
+  }
+
+  /**
    * @param {MouseEvent} event
    */
   oncontextmenu = (event) => {
@@ -381,7 +396,7 @@ class PureContextMenu {
     this._clickEvents().forEach((type) => {
       document.removeEventListener(type, this);
     });
-    ["contextmenu", "long-press"].forEach((type) => {
+    ["contextmenu", "long-press", "keydown"].forEach((type) => {
       this._el.removeEventListener(type, this);
     });
   };
