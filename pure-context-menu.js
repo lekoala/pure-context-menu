@@ -21,7 +21,7 @@ let baseOptions = {
   dividerClass: "dropdown-divider",
   menuItemClass: "pure-context-menu-item",
   itemClass: "dropdown-item pure-context-menu-item",
-  disabledClass: "disabled",
+  disabledClass: ["disabled", "user-select-none"],
   zIndex: "9999",
   preventCloseOnClick: false,
   useLists: false,
@@ -169,7 +169,7 @@ class PureContextMenu {
         //@link https://getbootstrap.com/docs/5.3/components/list-group/#for-links-and-buttons
         child.classList.add(...this._options.listItemClass.split(" "));
         if (item.disabled) {
-          child.classList.add(this._options.disabledClass);
+          child.classList.add(...this._options.disabledClass);
         }
       }
       if (item.classes) {
@@ -193,7 +193,7 @@ class PureContextMenu {
         if (!useLists) {
           link.classList.add(...this._options.itemClass.split(" "));
           if (item.disabled) {
-            link.classList.add(this._options.disabledClass);
+            link.classList.add(...this._options.disabledClass);
           }
         }
         child.appendChild(link);
@@ -362,7 +362,7 @@ class PureContextMenu {
       const index = [...li.parentElement.childNodes].findIndex((item) => item === li);
       const item = this._items[index];
 
-      if (item.callback) {
+      if (item.callback && !item.disabled) {
         item.callback(this._currentEvent, this);
 
         // do not close the menu if set

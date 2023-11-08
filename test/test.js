@@ -35,6 +35,13 @@ const items = [
       alert("It didn't close");
     },
   },
+  {
+    label: "This callback is cancelled",
+    disabled: true,
+    callback: () => {
+        document.body.dataset.callback = 'received'
+    },
+  },
 ];
 
 test("it can create", (t) => {
@@ -61,3 +68,16 @@ test("it is built on right click", (t) => {
   inst.off();
   t.is(document.querySelector(".pure-context-menu"), null);
 });
+
+test("it will not call the callback", (t) => {
+  let body = document.querySelector("body");
+  new PureContextMenu(body, items);
+  t.is(document.querySelector(".pure-context-menu"), null);
+  body.dispatchEvent(new MouseEvent("contextmenu"));
+  let menu = document.querySelector(".pure-context-menu");
+  t.assert(menu instanceof HTMLElement);
+  let item = menu.querySelectorAll("li a")[4]
+
+  item.dispatchEvent(new Event('click', {bubbles: true}))
+  t.assert(document.body.dataset.callback === undefined)
+})
