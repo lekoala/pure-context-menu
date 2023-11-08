@@ -29,7 +29,6 @@
       menuEnabled = !menuEnabled;
       console.log("menu state: " + menuEnabled);
     });
-    ;
 
     const items = [
       {
@@ -65,6 +64,13 @@
       {
         label: "This is disabled",
         disabled: true,
+      },
+      {
+        label: "This is disabled and won't call the callback",
+        disabled: true,
+        callback: () => {
+          alert('nope');
+        }
       },
     ];
     const otherItems = [
