@@ -4,10 +4,6 @@ import test from "ava";
 // Somehow new Event syntax is not working
 Event = window.Event;
 
-const noop = () => {
-    return 'this is useless';
-}
-
 const items = [
   {
     label: "Click here",
