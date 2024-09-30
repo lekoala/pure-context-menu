@@ -20,6 +20,11 @@
   <script src="https://cdn.jsdelivr.net/npm/last-icon@2/last-icon.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/last-icon@2/last-icon.min.css" rel="stylesheet" />
 
+  <style>
+    ::backdrop {
+      backdrop-filter: blur(3px);
+    }
+  </style>
   <script type="module">
     import PureContextMenu from "./pure-context-menu.js";
 
@@ -81,6 +86,7 @@
     // bind to html if body does not have 100% height
     let bodyMenu = new PureContextMenu(document.querySelector("html"), items, {
       dropdownClass: "dropdown-menu test-class",
+      popover: true,
       // closeIfOpen: true,
       show: (e, inst) => {
         if (e.target.id == "target1") {
@@ -95,7 +101,7 @@
 
     const items2 = [
       {
-        label: "<l-i name='star'></l-i> Block here",
+        label: "<l-i name='star'></l-i> Block here with a long item",
         html: true,
         classes: ['list-group-item-primary'],
         callback: () => {
@@ -116,6 +122,8 @@
     ];
     let blockMenu = new PureContextMenu(document.querySelector("#block"), items2, {
       useLists: true,
+      minWidth: '200px',
+      maxWidth: '400px',
     });
 
     const items3 = [

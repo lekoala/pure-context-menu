@@ -22,6 +22,7 @@
  * @property {Function} show Whether to show menu based on event
  * @property {String} minWidth Defaults to 120px
  * @property {String} maxWidth Defaults to 240px
+ * @property {Boolean} popover Use popover api if available. Allows backdrops.
  */
 let baseOptions = {
   contextMenuClass: "pure-context-menu",
@@ -40,7 +41,12 @@ let baseOptions = {
   show: (event, inst) => true,
   minWidth: "120px",
   maxWidth: "240px",
+  popover: false,
 };
+
+function supportsPopover() {
+  return typeof HTMLElement !== "undefined" && typeof HTMLElement.prototype === "object" && "popover" in HTMLElement.prototype;
+}
 
 let instances = new Set();
 
@@ -168,6 +174,10 @@ class PureContextMenu {
     contextMenu.classList.add(...this._options.dropdownClass.split(" "));
     if (useLists) {
       contextMenu.classList.add(this._options.listClass);
+    }
+
+    if (supportsPopover() && this._options.popover) {
+      contextMenu.setAttribute("popover", "manual");
     }
 
     for (const item of this._items) {
@@ -334,6 +344,9 @@ class PureContextMenu {
     document.querySelector("body").append(contextMenu);
 
     // set the position already so that width can be computed
+    if (contextMenu.hasAttribute("popover")) {
+      contextMenu.showPopover();
+    }
     contextMenu.style.position = "fixed";
     contextMenu.style.zIndex = this._options.zIndex;
 

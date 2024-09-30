@@ -78,6 +78,10 @@ If it's not working, `long-press` is supported, simply add it to your pages
 <script src="https://cdn.jsdelivr.net/npm/long-press-event@2.4.6/dist/long-press-event.min.js" type="module"></script>
 ```
 
+## Popover api
+
+Popover api will be used if available or fallback gracefully to fixed/z-index.
+
 ## Options
 
 Options can be either passed to the constructor (eg: optionName) or globally updated using `PureContextMenu.updateGlobalOptions`
@@ -100,6 +104,7 @@ Options can be either passed to the constructor (eg: optionName) or globally upd
 | show                | <code>function</code> | Whether to show menu based on event                             |
 | minWidth            | <code>String</code>   | Defaults to 120px                                               |
 | maxWidth            | <code>String</code>   | Defaults to 240px                                               |
+| popover             | <code>Boolean</code>  | Use popover api if available. Allows backdrops.                 |
 
 ## Item
 
