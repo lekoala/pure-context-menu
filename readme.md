@@ -98,6 +98,8 @@ Options can be either passed to the constructor (eg: optionName) or globally upd
 | fastClick           | <code>Boolean</code>  | Triggers click on touchstart for mobile devices                 |
 | closeIfOpen         | <code>Boolean</code>  | Close menu with right close if already opened                   |
 | show                | <code>function</code> | Whether to show menu based on event                             |
+| minWidth            | <code>String</code>   | Defaults to 120px                                               |
+| maxWidth            | <code>String</code>   | Defaults to 240px                                               |
 
 ## Item
 

@@ -1,4 +1,10 @@
 /**
+ * Pure context menu
+ * https://github.com/lekoala/pure-context-menu
+ * @license MIT
+ */
+
+/**
  * @typedef Config
  * @property {String} contextMenuClass Class applied for holder element
  * @property {String} dropdownClass Class applied for dropdown. Accepts space separated classes
@@ -14,6 +20,8 @@
  * @property {Boolean} fastClick Triggers click on touchstart for mobile devices
  * @property {Boolean} closeIfOpen Close menu with right close if already opened
  * @property {Function} show Whether to show menu based on event
+ * @property {String} minWidth Defaults to 120px
+ * @property {String} maxWidth Defaults to 240px
  */
 let baseOptions = {
   contextMenuClass: "pure-context-menu",
@@ -30,6 +38,8 @@ let baseOptions = {
   fastClick: false,
   closeIfOpen: false,
   show: (event, inst) => true,
+  minWidth: "120px",
+  maxWidth: "240px",
 };
 
 let instances = new Set();
@@ -151,8 +161,8 @@ class PureContextMenu {
   _buildContextMenu = () => {
     const useLists = this._options.useLists;
     const contextMenu = document.createElement("ul");
-    contextMenu.style.minWidth = "120px";
-    contextMenu.style.maxWidth = "240px";
+    contextMenu.style.minWidth = this._options.minWidth;
+    contextMenu.style.maxWidth = this._options.maxWidth;
     contextMenu.style.display = "block";
     contextMenu.classList.add(this._options.contextMenuClass);
     contextMenu.classList.add(...this._options.dropdownClass.split(" "));
